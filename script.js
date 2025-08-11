@@ -43,33 +43,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ---------- COUNTDOWN ---------- */
   // set the launch date here
-  const countdownDate = new Date("December 31, 2025 23:59:59").getTime();
-
-  function pad(n) { return n.toString().padStart(2, "0"); }
+// Year, Month(0-based), Day, Hour, Minute, Second
+document.addEventListener("DOMContentLoaded", () => {
+  const countdownDate = new Date(2025, 11, 31, 23, 59, 59).getTime();
 
   function updateCountdown() {
-    const now = Date.now();
-    const dist = countdownDate - now;
+    const now = new Date().getTime();
+    const distance = countdownDate - now;
 
-    if (dist <= 0) {
-      document.querySelector(".countdown").innerHTML = "<div style='padding:12px; color:#fff; font-weight:700;'>We Have Launched!</div>";
-      clearInterval(countdownInterval);
+    if (distance <= 0) {
+      document.querySelector(".countdown").innerHTML =
+        "<h3>We Have Launched!</h3>";
+      clearInterval(timer);
       return;
     }
 
-    const days = Math.floor(dist / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((dist % (1000 * 60)) / 1000);
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-    document.getElementById("days").textContent = pad(days);
-    document.getElementById("hours").textContent = pad(hours);
-    document.getElementById("minutes").textContent = pad(minutes);
-    document.getElementById("seconds").textContent = pad(seconds);
+    document.getElementById("days").textContent = days.toString().padStart(2, "0");
+    document.getElementById("hours").textContent = hours.toString().padStart(2, "0");
+    document.getElementById("minutes").textContent = minutes.toString().padStart(2, "0");
+    document.getElementById("seconds").textContent = seconds.toString().padStart(2, "0");
   }
 
-  const countdownInterval = setInterval(updateCountdown, 1000);
-  updateCountdown(); // initial call
+  const timer = setInterval(updateCountdown, 1000);
+  updateCountdown();
+});
+
 
 
 
