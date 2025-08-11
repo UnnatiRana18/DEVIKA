@@ -12,7 +12,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const rightBtn = document.querySelector(".right-btn");
 
   function showGalleryImage(index) {
-    galleryImage.src = images[index];
+    if (galleryImage) {
+      galleryImage.src = images[index];
+    }
   }
 
   leftBtn?.addEventListener("click", () => {
@@ -31,7 +33,10 @@ document.addEventListener("DOMContentLoaded", () => {
     showGalleryImage(currentIndex);
   }, 5000);
 
-  document.querySelector(".side-gallery")?.addEventListener("mouseenter", () => clearInterval(autoSlide));
+  document.querySelector(".side-gallery")?.addEventListener("mouseenter", () =>
+    clearInterval(autoSlide)
+  );
+
   document.querySelector(".side-gallery")?.addEventListener("mouseleave", () => {
     autoSlide = setInterval(() => {
       currentIndex = (currentIndex + 1) % images.length;
@@ -39,21 +44,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 5000);
   });
 
+  // Show first image on load
   showGalleryImage(currentIndex);
 
   /* ---------- COUNTDOWN ---------- */
-  // set the launch date here
-// Year, Month(0-based), Day, Hour, Minute, Second
-document.addEventListener("DOMContentLoaded", () => {
-  const countdownDate = new Date(2025, 11, 31, 23, 59, 59).getTime();
+  // Set the target date (Year, Month[0-based], Day, Hour, Minute, Second)
+const countdownDate = new Date(2026, 0, 1, 0, 0, 0).getTime();
+
+
 
   function updateCountdown() {
+    console.log("Countdown running", new Date());
+
     const now = new Date().getTime();
     const distance = countdownDate - now;
 
     if (distance <= 0) {
-      document.querySelector(".countdown").innerHTML =
-        "<h3>We Have Launched!</h3>";
+      const countdownEl = document.querySelector(".countdown");
+      if (countdownEl) {
+        countdownEl.innerHTML = "<h3>We Have Launched!</h3>";
+      }
       clearInterval(timer);
       return;
     }
@@ -71,6 +81,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const timer = setInterval(updateCountdown, 1000);
   updateCountdown();
+
+  /* ---------- SMOOTH SCROLL FOR NAV LINKS ---------- */
+  document.querySelectorAll('header nav a[href^="#"]').forEach((a) => {
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute("href"));
+      if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
 });
 
 
@@ -84,4 +103,4 @@ document.addEventListener("DOMContentLoaded", () => {
       if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   });
-});
+
